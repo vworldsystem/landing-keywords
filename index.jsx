@@ -34,6 +34,18 @@ const KEYWORD_DATA = {
 
 function App() {
   const [selectedKeyword, setSelectedKeyword] = React.useState(null);
+  const detailRef = React.useRef(null);
+
+  const handleKeywordClick = (keyword) => {
+    setSelectedKeyword(keyword);
+
+    // 자동 스크롤
+    setTimeout(() => {
+      if (detailRef.current) {
+        detailRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 150);
+  };
 
   const sampleProducts = [
     { name: "🔥 인기상품 1", url: "https://www.coupang.com" },
@@ -66,7 +78,7 @@ function App() {
                 <button
                   key={keyword}
                   className="bg-white shadow hover:shadow-lg transition p-4 rounded-xl border border-pink-200"
-                  onClick={() => setSelectedKeyword(keyword)}
+                  onClick={() => handleKeywordClick(keyword)}
                 >
                   {keyword}
                 </button>
@@ -78,7 +90,10 @@ function App() {
 
       {/* Keyword Detail */}
       {selectedKeyword && (
-        <div className="max-w-3xl mx-auto mt-16 p-6 bg-white shadow-xl rounded-2xl border border-pink-300">
+        <div
+          ref={detailRef}
+          className="max-w-3xl mx-auto mt-16 p-6 bg-white shadow-xl rounded-2xl border border-pink-300"
+        >
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
             🔍 "{selectedKeyword}" 추천 상품
           </h3>
